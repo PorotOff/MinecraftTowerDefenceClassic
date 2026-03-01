@@ -23,21 +23,6 @@ public class DigChecker
         _dugTile = dugTile;
     }
 
-    public bool IsDigDirectionChanged(bool isHorizontalDigDirection, Vector3Int currentDigPosition, Vector3Int lastDugPosition)
-    {
-        if (isHorizontalDigDirection && lastDugPosition.y != currentDigPosition.y)
-        {
-            return true;
-        }
-
-        if (isHorizontalDigDirection == false && lastDugPosition.x != currentDigPosition.x)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
     public bool IsAnyNextStepBlocked(Vector3Int lastDugPosition)
     {
         foreach (var neighbourTilePosition in _neighbourTilesPositions)
@@ -90,6 +75,38 @@ public class DigChecker
         }
 
         return true;
+    }
+
+    public bool IsDigDirectionChanged(bool isHorizontalDigDirection, Vector3Int currentDigPosition, Vector3Int lastDugPosition)
+    {
+        if (isHorizontalDigDirection && lastDugPosition.y != currentDigPosition.y)
+        {
+            return true;
+        }
+
+        if (isHorizontalDigDirection == false && lastDugPosition.x != currentDigPosition.x)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public List<TileBase> GetNeighboursTiles(Vector3Int currentPosition)
+    {
+        List<TileBase> tiles = new List<TileBase>();
+
+        foreach (var neighbourTilePosition in _neighbourTilesPositions)
+        {
+            TileBase neighbourTile = _tilemap.GetTile(currentPosition + neighbourTilePosition);
+            
+            if (neighbourTile != null)
+            {
+                tiles.Add(neighbourTile);
+            }
+        }
+
+        return tiles;
     }
 
     private bool HasNearLastDugTile(Vector3Int digPosition, Vector3Int lastDugPosition)

@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(WaypointsSpawner))]
 public class WaypointPlacer : MonoBehaviour
 {
-    [SerializeField, Tooltip("Располагать waypoint'ы в соответствии с их порядком")] private List<Waypoint> _cachedWaypoints = new List<Waypoint>();
+    [SerializeField, Tooltip("Располагать waypoint'ы в соответствии с их порядком на сцене")] private List<Waypoint> _cachedWaypoints = new List<Waypoint>();
     [SerializeField] private Tilemap _tilemap;
     [SerializeField] private Digger _digger;
 
@@ -19,8 +19,6 @@ public class WaypointPlacer : MonoBehaviour
     private void Awake()
     {
         _waypointsSpawner = GetComponent<WaypointsSpawner>();
-
-        Reset();
     }
 
     private void OnEnable()
@@ -51,18 +49,12 @@ public class WaypointPlacer : MonoBehaviour
 
     private void EnableCachedWaypoints()
     {
-        foreach (var cachedWaypoint in _cachedWaypoints)
-        {
-            cachedWaypoint.gameObject.SetActive(true);
-        }
+        _cachedWaypoints.ForEach(cachedWaypoint => cachedWaypoint.gameObject.SetActive(true));
     }
 
     private void DisableCachedWaypoints()
     {
-        foreach (var cachedWaypoint in _cachedWaypoints)
-        {
-            cachedWaypoint.gameObject.SetActive(false);
-        }
+        _cachedWaypoints.ForEach(cachedWaypoint => cachedWaypoint.gameObject.SetActive(false));
     }
 
     private void CreateCachedBasedWaypoints()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -19,6 +20,7 @@ public class Digger : MonoBehaviour
     public event Action DigDirectionChanged;
 
     public Vector3Int LastDugPosition { get; private set; }
+    public List<TileBase> CurrentNeighbours { get; private set; }
 
     private void Awake()
     {
@@ -52,9 +54,7 @@ public class Digger : MonoBehaviour
         Vector3Int digPosition = _tilemap.WorldToCell(pressedScreenPointPosition);
 
         if (_digChecker.CanDig(digPosition, LastDugPosition) == false)
-        {
             return;
-        }
 
         if (_digChecker.IsDigDirectionChanged(_isHorizontalDigDirection, digPosition, LastDugPosition))
         {
@@ -65,12 +65,15 @@ public class Digger : MonoBehaviour
 
         _tilemap.SetTile(digPosition, _dugTile);
         LastDugPosition = digPosition;
-        Dug?.Invoke();
         // Debug.Log($"Вскопан тайл на позиции {digPosition}");
 
         if (_digChecker.IsAnyNextStepBlocked(LastDugPosition))
         {
             Debug.LogWarning($"Больше некуда копать");
         }
+
+        CurrentNeighbours = _digChecker.GetNeighboursTiles(digPosition);
+
+        Dug?.Invoke();
     }
 }
