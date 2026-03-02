@@ -7,6 +7,8 @@ public class InputService : MonoBehaviour
     private InputSystem _inputSystem;
 
     public event Action Pressed;
+    public event Action Paused;
+    public event Action Continued;
     public event Action Restarted;
 
     public Vector2 PointerPosition { get; private set; }

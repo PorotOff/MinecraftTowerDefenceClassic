@@ -11,8 +11,7 @@ public class TowerDefenceGameState : IGameState
 
     public void Enter()
     {
-        _digger.enabled = false;
-        _waypointPlacer.enabled = false;
+        
     }
 
     public void Exit() { }
